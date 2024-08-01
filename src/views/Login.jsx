@@ -32,7 +32,7 @@ export const Login = () => {
 
         if (formData.email && formData.password) {
             try {
-                const response = await axios.post('http://localhost:8000/user/login', formData, {
+                const response = await axios.post('https://github.com/yashmaurya321-crypto/fedex', formData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
