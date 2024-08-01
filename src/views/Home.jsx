@@ -1,4 +1,5 @@
 import React from 'react';
+import { Cards } from '../components/Cards';
 
 export const Home = () => {
     return (
@@ -36,6 +37,14 @@ export const Home = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div className="flex flex-col items-center justify-center space-y-5 bg-blue-500 w-full h-72">
+                    <h1>Manage Your Shipments</h1>
+                    <div className='flex flex-row items-center justify-center space-x-5'>
+                        <Cards />
                     </div>
                 </div>
             </section>

@@ -32,13 +32,16 @@ export const Login = () => {
 
         if (formData.email && formData.password) {
             try {
-                const response = await axios.post('https://github.com/yashmaurya321-crypto/fedex', formData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true, // for cookies to work
-                });
-                const result = await response.data;
+                const response = await axios.post('https://fedex-j5gp.onrender.com/api/login',
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        withCredentials: true, // for cookies to work
+                    });
+                const result = response.data;
+                console.log(result)
                 if (result.success) {
                     Cookies.set('UserToken', result.data.token);
                     navigate("/");
