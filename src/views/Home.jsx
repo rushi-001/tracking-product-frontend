@@ -2,6 +2,7 @@ import React from 'react';
 import { Cards } from '../components/Cards';
 
 export const Home = () => {
+
     return (
         <div className='pt-36 sm:pt-32 md:pt-28 lg:pt-20 xl:pt-16'>
             <section className="relative bg-[#E8B446]">
@@ -41,10 +42,34 @@ export const Home = () => {
                 </div>
             </section>
             <section>
-                <div className="flex flex-col items-center justify-center space-y-5 bg-blue-500 w-full h-72">
-                    <h1>Manage Your Shipments</h1>
-                    <div className='flex flex-row items-center justify-center space-x-5'>
-                        <Cards />
+                <div className="flex flex-col items-center justify-center space-y-5 w-full h-full p-3">
+                    <h1 className="text-2xl font-bold mb-3 underline">Manage Your Shipments</h1>
+                    <div className='flex flex-wrap justify-center gap-0 w-full'>
+                        <Cards
+                            img={"./assets/pick-up.png"}
+                            title="Schedule Pickup"
+                            link={"/delivered"}
+                        />
+                        <Cards
+                            img={"./assets/package.png"}
+                            title="Rediract You Package"
+                            link={"/delivered"}
+                        />
+                        <Cards
+                            img={"./assets/map.png"}
+                            title="Find Location"
+                            link={"/delivered"}
+                        />
+                        <Cards
+                            img={"./assets/agent.png"}
+                            title="Seller  Details"
+                            link={"/delivered"}
+                        />
+                        <Cards
+                            img={"./assets/faq.png"}
+                            title="FAQs"
+                            link={"/delivered"}
+                        />
                     </div>
                 </div>
             </section>
