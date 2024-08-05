@@ -41,6 +41,14 @@ export const Login = () => {
                         withCredentials: true, // for cookies to work
                     });
                 const result = response.data;
+
+                // const result = {
+                //     success: true,
+                //     data: {
+                //         token: '123456789'
+                //     }
+                // }
+
                 console.log(result)
                 if (result.success) {
                     Cookies.set('UserToken', result.data.token);

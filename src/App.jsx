@@ -13,9 +13,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout1 />}>
           <Route index element={<Home />} />
-          <Route path="/shipping" element={<Login />} />
-          <Route path="/tracking" element={<Login />} />
-          <Route path="/account" element={<Login />} />
+          <Route element={<></>}> {/* add protacted element or component */}
+            <Route path="/shipping" element={<Login />} />
+            <Route path="/tracking" element={<Login />} />
+            <Route path="/account" element={<Login />} />
+          </Route>
           <Route path="/support" element={<Support />} />
           <Route path="/login" element={<Login />} />
           <Route path='/sign-up' element={<SignUp />} />

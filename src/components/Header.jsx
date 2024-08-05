@@ -7,18 +7,18 @@ export const Header = () => {
     // cookie is present or not
     const [isCookiePresent, setIsCookiePresent] = useState(false);
     // token decoded or not
-    const [isDecodedToken, setDecodedToken] = useState(null);
+    // const [isDecodedToken, setDecodedToken] = useState(null);
 
     useEffect(() => {
         const userCookieValue = Cookies.get('UserToken');
         if (userCookieValue) {
             setIsCookiePresent(true);
-            try {
-                const tokenData = jwtDecode(userCookieValue);
-                setDecodedToken(tokenData);
-            } catch (error) {
-                console.error('Failed to decode token:', error);
-            }
+            // try {
+            //     const tokenData = jwtDecode(userCookieValue);
+            // setDecodedToken(tokenData);
+            // } catch (error) {
+            //     console.error('Failed to decode token:', error);
+            // }
         }
     }, []);
 
@@ -50,10 +50,10 @@ export const Header = () => {
                                 <Link to='/sign-up' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Sign Up</Link>
                             </div>
                         )}
-                        {isDecodedToken && !isAdminLogin && (
+                        {isCookiePresent && (
                             <div className="flex flex-wrap items-center text-base justify-center md:justify-end">
                                 <span onClick={logoutBtn} className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Logout</span>
-                                <span className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">{isDecodedToken.fullName}</span>
+                                <span className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">name</span> {/* {isDecodedToken.fullName} */}
                             </div>
                         )}
                     </nav>
