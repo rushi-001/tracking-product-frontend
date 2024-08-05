@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 export const Home = () => {
 
     const [isFormData, setFormData] = useState(null);
-    const [isCookie, setCookie] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -23,17 +22,21 @@ export const Home = () => {
         const userToken = Cookies.get('UserToken');
         if (userToken) {
             if (isFormData) {
-                axios.post('http://localhost:3000/api/tracking', isFormData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    withCredentials: true, // for cookies to work
-                }).then((response) => {
-                    console.log(response);
-                }).catch((error) => {
-                    alert("Something went wrong!");
-                    console.error(error);
-                })
+                const trackingNumber = isFormData['trackId'];
+                console.log(trackingNumber);
+                axios.post('http://localhost:3000/api/track', { trackingNumber }, // sending data in json fromat
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'authorization': `Bearer ${userToken}`,
+                        },
+                        withCredentials: true, // for cookies to work
+                    }).then((response) => {
+                        console.log(response);
+                    }).catch((error) => {
+                        alert("Something went wrong!");
+                        console.log('Error: ' + error);
+                    })
             } else {
                 alert('Please add the "Track ID"');
             }
@@ -60,8 +63,8 @@ export const Home = () => {
                                 <div className="bg-white bg-opacity-70 backdrop-blur-lg p-6 lg:p-8 rounded-lg shadow-lg w-full max-w-lg">
                                     <form className="flex flex-col">
                                         <div className="w-full mb-4">
-                                            <label htmlFor="name" className="leading-7 text-lg font-bold text-gray-600">Tracking ID</label>
-                                            <input onChange={handleChange} type="text" id="name" name="name" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                                            <label htmlFor="trackId" className="leading-7 text-lg font-bold text-gray-600">Tracking ID</label>
+                                            <input onChange={handleChange} type="text" id="trackId" name="trackId" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                         </div>
                                         <div className="w-full mb-4 border-b border-gray-400 pb-3">
                                             <button onClick={handleSubmitBtn} className="flex mx-auto text-white bg-indigo-500 border-0 rounded-lg py-2 px-8 focus:outline-none hover:bg-indigo-600 text-lg">Track Now</button>

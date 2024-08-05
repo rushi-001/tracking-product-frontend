@@ -35,6 +35,7 @@ export const SignUp = () => {
                         'Content-Type': 'application/json',
                     },
                 });
+
                 // const result = await response.data;
                 // console.log(result);
                 navigate("/login");
