@@ -30,7 +30,7 @@ export const SignUp = () => {
         if (formData.username && formData.email && formData.password) {
             try {
                 // const response = await axios.post('https://fedex-j5gp.onrender.com/api/register', formData, {
-                await axios.post('https://fedex-j5gp.onrender.com/api/register', formData, {
+                await axios.post('http://localhost:3000/api/register', formData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

@@ -6,24 +6,31 @@ import { jwtDecode } from 'jwt-decode';
 export const Header = () => {
     // cookie is present or not
     const [isCookiePresent, setIsCookiePresent] = useState(false);
-    // token decoded or not
-    // const [isDecodedToken, setDecodedToken] = useState(null);
+    // user data
+    const [isUserData, setUserData] = useState(null);
 
     useEffect(() => {
-        const userCookieValue = Cookies.get('UserToken');
-        if (userCookieValue) {
-            setIsCookiePresent(true);
-            // try {
-            //     const tokenData = jwtDecode(userCookieValue);
-            // setDecodedToken(tokenData);
-            // } catch (error) {
-            //     console.error('Failed to decode token:', error);
-            // }
+        try {
+            // Check if the cookies exist
+            const userToken = Cookies.get('UserToken');
+            const user = Cookies.get('User');
+
+            if (userToken && user) {
+                // Decode token and parse user data
+                // const decodedToken = jwtDecode(userToken);
+                const userData = JSON.parse(user);
+
+                setIsCookiePresent(true);
+                setUserData(userData);
+            }
+        } catch (error) {
+            console.error('Failed to decode token or parse user data:', error);
         }
     }, []);
 
     const logoutBtn = () => {
         Cookies.remove('UserToken');
+        Cookies.remove('User');
         window.location.reload();
     }
 
@@ -53,7 +60,7 @@ export const Header = () => {
                         {isCookiePresent && (
                             <div className="flex flex-wrap items-center text-base justify-center md:justify-end">
                                 <span onClick={logoutBtn} className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Logout</span>
-                                <span className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">name</span> {/* {isDecodedToken.fullName} */}
+                                <span className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">{isUserData.username}</span>
                             </div>
                         )}
                     </nav>

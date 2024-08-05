@@ -23,7 +23,7 @@ export const Home = () => {
         const userToken = Cookies.get('UserToken');
         if (userToken) {
             if (isFormData) {
-                axios.post('https://fedex-j5gp.onrender.com/api/tracking', isFormData, {
+                axios.post('http://localhost:3000/api/tracking', isFormData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

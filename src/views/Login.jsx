@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 export const Login = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [showLoginAlert, setShowLoginAlert] = useState(false);
-    // const [isCookieAvailable, setCookieAvailable] = useState(false);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -32,26 +31,17 @@ export const Login = () => {
 
         if (formData.email && formData.password) {
             try {
-                const response = await axios.post('https://fedex-j5gp.onrender.com/api/login',
+                const response = await axios.post('http://localhost:3000/api/login',
                     formData,
                     {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
                         withCredentials: true, // for cookies to work
                     });
-                const result = response.data;
 
-                // const result = {
-                //     success: true,
-                //     data: {
-                //         token: '123456789'
-                //     }
-                // }
+                // console.log(response.data);
 
-                console.log(result)
-                if (result.success) {
-                    Cookies.set('UserToken', result.data.token);
+                if (response.data) {
+                    Cookies.set('UserToken', response.data.token);
+                    Cookies.set('User', JSON.stringify(response.data.user));
                     navigate("/");
                     window.location.reload();
                 } else {
