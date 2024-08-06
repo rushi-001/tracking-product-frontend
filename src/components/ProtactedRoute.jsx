@@ -20,6 +20,7 @@ export const ProtactedRoute = (props) => {
                 navigate("/");
             }
         } else {
+            alert("Please login first!");
             navigate("/login");
         }
     }, [])

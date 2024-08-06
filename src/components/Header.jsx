@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 
 export const Header = () => {
     // cookie is present or not
@@ -47,7 +47,6 @@ export const Header = () => {
                     <nav className="md:ml-36 md:mr-auto flex flex-wrap items-center text-base justify-center md:justify-between flex-1">
                         <div className="flex flex-wrap items-center text-base justify-center">
                             <Link to='/shipping' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Shipping</Link>
-                            <Link to='/tracking' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Tracking</Link>
                             <Link to='/account' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Account</Link>
                             <Link to='/support' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Support</Link>
                         </div>

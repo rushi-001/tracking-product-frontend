@@ -17,38 +17,47 @@ export const Home = () => {
         }));
     }
 
-    const handleSubmitBtn = (e) => {
+    const handleSubmitBtnGET = (e) => {
         e.preventDefault();
-        const userToken = Cookies.get('UserToken');
-        if (userToken) {
-            if (isFormData) {
-                const trackingNumber = isFormData['trackId']; // backend looking for trackingNumber in req.body
-                axios.post('http://localhost:3000/api/track', { trackingNumber }, // sending data in json fromat
-                    {
+
+        try {
+            const userToken = Cookies.get('UserToken');
+            if (!userToken) {
+                alert('Please login first!');
+                navigate('/login');
+            } else {
+                if (isFormData) {
+                    const trackingNumber = isFormData['trackId'];
+                    // console.log({ trackingNumber });
+
+                    axios.get('http://localhost:3000/api/track', {
+                        params: { trackingNumber }, // sending data as query parameter
                         headers: {
                             'Content-Type': 'application/json',
-                            'authorization': `Bearer ${userToken}`,
                         },
                         withCredentials: true, // for cookies to work
+                    }).then((response) => {
+                        // console.log(response);
+                        alert(`Tracking ID: ${trackingNumber} status: ${response.data.data.status}`);
                     }).catch((error) => {
                         if (error.response) {
-                            alert(`Error: ${error.response.data.message}. Check the existing Trackings.`); // Error response from server
+                            alert(`Error: ${error.response.data.message}.`); // Error response from server
                         } else {
                             alert("Something went wrong!"); // Network or other errors
                         }
                         console.log('Error: ' + error);
-                    })
-            } else {
-                alert('Please add the "Track ID"');
+                    });
+                } else {
+                    alert('Please add the "Track ID"');
+                }
             }
-        } else {
-            navigate('/login');
-            alert('Please login first!');
+        } catch (error) {
+            console.error('Failed to decode token or parse user data:', error);
         }
     }
 
     return (
-        <div className='pt-36 sm:pt-32 md:pt-28 lg:pt-20 xl:pt-16'>
+        <div>
             <section className="relative bg-[#E8B446]">
                 <div className='container mx-auto px-4'>
                     <div className='relative'>
@@ -68,7 +77,7 @@ export const Home = () => {
                                             <input onChange={handleChange} type="text" id="trackId" name="trackId" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                         </div>
                                         <div className="w-full mb-4 border-b border-gray-400 pb-3">
-                                            <button onClick={handleSubmitBtn} className="flex mx-auto text-white bg-indigo-500 border-0 rounded-lg py-2 px-8 focus:outline-none hover:bg-indigo-600 text-lg">Track Now</button>
+                                            <button onClick={handleSubmitBtnGET} className="flex mx-auto text-white bg-indigo-500 border-0 rounded-lg py-2 px-8 focus:outline-none hover:bg-indigo-600 text-lg">Track Now</button>
                                         </div>
                                         <div className="flex flex-col text-center w-full mb-4">
                                             <p className="lg:w-2/3 mx-auto leading-relaxed font-light text-base">Get updates in your mobile devices.</p>
