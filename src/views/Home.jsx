@@ -22,8 +22,7 @@ export const Home = () => {
         const userToken = Cookies.get('UserToken');
         if (userToken) {
             if (isFormData) {
-                const trackingNumber = isFormData['trackId'];
-                console.log(trackingNumber);
+                const trackingNumber = isFormData['trackId']; // backend looking for trackingNumber in req.body
                 axios.post('http://localhost:3000/api/track', { trackingNumber }, // sending data in json fromat
                     {
                         headers: {
@@ -31,10 +30,12 @@ export const Home = () => {
                             'authorization': `Bearer ${userToken}`,
                         },
                         withCredentials: true, // for cookies to work
-                    }).then((response) => {
-                        console.log(response);
                     }).catch((error) => {
-                        alert("Something went wrong!");
+                        if (error.response) {
+                            alert(`Error: ${error.response.data.message}. Check the existing Trackings.`); // Error response from server
+                        } else {
+                            alert("Something went wrong!"); // Network or other errors
+                        }
                         console.log('Error: ' + error);
                     })
             } else {
@@ -158,7 +159,6 @@ export const Home = () => {
                     </div>
                 </div>
             </section>
-
         </div>
     )
 }

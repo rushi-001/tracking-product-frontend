@@ -5,6 +5,8 @@ import { Home } from './views/Home'
 import { Login } from './views/Login'
 import { SignUp } from './views/SignUp'
 import { Support } from './views/Support'
+import { ProtactedRoute } from './components/ProtactedRoute'
+import { Track } from './views/Track'
 
 function App() {
 
@@ -13,9 +15,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout1 />}>
           <Route index element={<Home />} />
-          <Route element={<></>}> {/* add protacted element or component */}
+          <Route element={<ProtactedRoute />}>
             <Route path="/shipping" element={<Login />} />
-            <Route path="/tracking" element={<Login />} />
+            <Route path="/tracking" element={<Track />} />
             <Route path="/account" element={<Login />} />
           </Route>
           <Route path="/support" element={<Support />} />
