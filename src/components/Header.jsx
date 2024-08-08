@@ -46,6 +46,7 @@ export const Header = () => {
                     </div>
                     <nav className="md:ml-36 md:mr-auto flex flex-wrap items-center text-base justify-center md:justify-between flex-1">
                         <div className="flex flex-wrap items-center text-base justify-center">
+                            <Link to='/tracking' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Tracking</Link>
                             <Link to='/shipping' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Shipping</Link>
                             <Link to='/account' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Account</Link>
                             <Link to='/support' className="mr-5 hover:text-gray-400 text-gray-50 cursor-pointer font-bold">Support</Link>

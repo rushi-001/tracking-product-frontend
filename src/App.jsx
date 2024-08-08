@@ -7,6 +7,8 @@ import { SignUp } from './views/SignUp'
 import { Support } from './views/Support'
 import { ProtactedRoute } from './components/ProtactedRoute'
 import { Shipping } from './views/Shipping'
+import { Tracking } from './views/Tracking'
+import { Account } from './views/Account'
 
 function App() {
 
@@ -16,8 +18,9 @@ function App() {
         <Route path="/" element={<Layout1 />}>
           <Route index element={<Home />} />
           <Route element={<ProtactedRoute />}>
+            <Route path="/tracking" element={<Tracking />} />
             <Route path="/shipping" element={<Shipping />} />
-            <Route path="/account" element={<Login />} />
+            <Route path="/account" element={<Account />} />
           </Route>
           <Route path="/support" element={<Support />} />
           <Route path="/login" element={<Login />} />

@@ -28,7 +28,7 @@ export const ProtactedRoute = (props) => {
     return (
         <>
             {!isUser && (<h1 className='pt-36 flex items-center justify-center text-3xl'>Access denied</h1>)}
-            {isUser && (<Outlet />)};
+            {isUser && (<Outlet />)}
         </>
-    );
+    )
 }

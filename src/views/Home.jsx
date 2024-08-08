@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Cards } from '../components/Cards';
+import { HomeCards } from '../components/Cards';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -114,27 +114,27 @@ export const Home = () => {
                 <div className="flex flex-col items-center justify-center space-y-5 w-full h-full p-3">
                     <h1 className="text-2xl font-bold mb-3 underline">Manage Your Shipments</h1>
                     <div className='flex flex-wrap justify-center w-auto'>
-                        <Cards
+                        <HomeCards
                             img={"./assets/pick-up.png"}
                             title="Schedule Pickup"
                             link={"/delivered"}
                         />
-                        <Cards
+                        <HomeCards
                             img={"./assets/package.png"}
                             title="Rediract You Package"
                             link={"/delivered"}
                         />
-                        <Cards
+                        <HomeCards
                             img={"./assets/map.png"}
                             title="Find Location"
                             link={"/delivered"}
                         />
-                        <Cards
+                        <HomeCards
                             img={"./assets/agent.png"}
                             title="Seller  Details"
                             link={"/delivered"}
                         />
-                        <Cards
+                        <HomeCards
                             img={"./assets/faq.png"}
                             title="FAQs"
                             link={"/delivered"}
