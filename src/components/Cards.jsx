@@ -22,13 +22,14 @@ export const HomeCards = ({ img, category, title, description, link }) => {
     );
 }
 
-export const ShippingCards = ({ trackId, customerId, customerName, trackStatus, btnUpdate, btnDelete }) => {
+export const ShippingCards = ({ trackId, customerId, customerName, trackStatus, btnUpdate, btnDelete, trackingNumber }) => {
     return (
         <>
-            <div className="bg-gray-100 shadow-md hover:shadow-xl rounded-lg p-6 max-w-sm mx-auto">
+            <div className="bg-gray-100 shadow-md hover:shadow-xl transform duration-300 rounded-lg p-6 max-w-sm mx-auto">
                 <div className="flex flex-col space-y-4">
                     <div className="text-gray-800 font-semibold text-lg">
-                        <span className="block">Track ID: <span className="font-normal">{trackId}</span></span>
+                        <span className="block">Tracking Number: <span className="font-normal">{trackingNumber}</span></span>
+                        <span className="block">Tracking ID: <span className="font-normal">{trackId}</span></span>
                         <span className="block">Customer ID: <span className="font-normal">{customerId}</span></span>
                         <span className="block">Customer Name: <span className="font-normal">{customerName}</span></span>
                         <span className="block">Track Status: <span className="font-normal text-blue-500">{trackStatus}</span></span>
@@ -54,7 +55,7 @@ export const ShippingCards = ({ trackId, customerId, customerName, trackStatus, 
 export const TrackingCards = ({ trackId, trackStatus, btnVerify }) => {
     return (
         <>
-            <div className="flex flex-col shadow-md hover:shadow-xl sm:flex-row justify-between items-center m-5 bg-gray-100 py-9 rounded-lg">
+            <div className="flex flex-col shadow-md hover:shadow-xl transform duration-300 sm:flex-row justify-between items-center m-5 bg-gray-100 py-9 rounded-lg">
                 <div className="text-gray-800 ps-5 font-semibold text-lg">
                     <span className="block">Track ID: <span className="font-normal">{trackId}</span></span>
                     <span className="block">Track Status: <span className="font-normal">{trackStatus}</span></span>
