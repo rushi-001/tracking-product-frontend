@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ShippingCards } from '../components/Cards';
 
 export const Shipping = () => {
 
     const [isFormData, setFormData] = useState({});
+    const userToken = Cookies.get('UserToken');
+    const userInfo = JSON.parse(Cookies.get('User'));
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -16,8 +19,7 @@ export const Shipping = () => {
 
     const handleSubmitBtnPOST = async (e) => {
         e.preventDefault();
-        const userToken = Cookies.get('UserToken');
-        const userInfo = JSON.parse(Cookies.get('User'));
+
         if (userToken) {
             if (isFormData) {
                 const trackingNumber = isFormData['trackNumber'];
@@ -25,7 +27,7 @@ export const Shipping = () => {
                 const sellerId = userInfo._id;
                 const status = 'In Transit';
 
-                // ------FOR CREATING NEW TRACK IN SCHEMA ONLY--------
+                //?------FOR CREATING NEW TRACK IN SCHEMA ONLY--------
                 // axios.post('http://localhost:3000/api/track', { trackingNumber }, {
                 //     headers: {
                 //         'Content-Type': 'application/json',
@@ -44,6 +46,8 @@ export const Shipping = () => {
                 //     }
                 // });
 
+
+                //?-----------------------FOR CREATING NEW TRACK IN DATABASE AND POPULATING USER DATABASE-----------------------
                 axios.post('http://localhost:3000/api/v1/create', { sellerId, status, customerId, trackingNumber }, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -57,6 +61,8 @@ export const Shipping = () => {
                     console.log(error);
                 })
 
+                window.location.reload();
+
             } else {
                 alert('Please add the "Track ID"');
             }
@@ -65,6 +71,27 @@ export const Shipping = () => {
             alert('Please login first!');
         }
     }
+
+    //?-----------------------GETTING TRACKS FROM DATABASE-----------------------
+    const [isTracks, setTracks] = useState([]);
+
+    useEffect(() => {
+        const cardsData = () => {
+            try {
+                axios.get(`http://localhost:3000/api/v1/${userInfo._id}`).then((response) => {
+                    setTracks(response.data.user.orderTracking);
+                }).catch((err) => {
+                    console.log(err);
+                })
+            } catch (error) {
+                console.log(error);
+                alert('Somthing went wrong!');
+            }
+        }
+
+        cardsData();
+
+    }, []);
 
     // baki PUT, DELETE
 
@@ -154,12 +181,11 @@ export const Shipping = () => {
                 </div>
             </section>
             <section className='px-5 py-24 mx-auto'>
-                <div className="bg-gray-100 shadow-md hover:shadow-xl transform duration-300 rounded-lg p-6 max-w-sm mx-auto">
+                {/* <div className="bg-gray-100 shadow-md hover:shadow-xl transform duration-300 rounded-lg p-6 max-w-sm mx-auto">
                     <div className="flex flex-col space-y-4">
                         <div className="text-gray-800 font-semibold text-lg">
                             <span className="block">Track ID: <span className="font-normal">trackId</span></span>
-                            <span className="block">Customer ID: <span className="font-normal">customerId</span></span>
-                            <span className="block">Customer Name: <span className="font-normal">customerName</span></span>
+                            <span className="block">Track Number: <span className="font-normal">tracking number</span></span>
                             <span className="block">Track Status: <span className="font-normal text-blue-500">trackStatus</span></span>
                         </div>
                         <div className="flex space-x-4">
@@ -175,7 +201,11 @@ export const Shipping = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                {isTracks.map((track) => {
+                    return <ShippingCards key={track._id} btnUpdate={() => console.log(update)} btnDelete={() => console.log(deleteTrack)} trackId={track._id} trackStatus={track.status} trackingNumber={track.trackingNumber} />
+                })
+                }
             </section>
         </>
     )

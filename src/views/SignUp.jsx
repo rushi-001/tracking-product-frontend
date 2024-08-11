@@ -21,9 +21,9 @@ export const SignUp = () => {
 
     const navigate = useNavigate();
     const handleCancelBtn = () => {
-
         navigate("/");
     }
+
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
 
@@ -41,6 +41,8 @@ export const SignUp = () => {
                 navigate("/login");
             } catch (error) {
                 console.error('Error:', error);
+                alert(`Error: ${error.response.data.message}.`);
+
             }
         } else {
             setShowAlert(true);

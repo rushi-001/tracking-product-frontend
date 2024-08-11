@@ -29,15 +29,21 @@ export const Login = () => {
     const handleSubmitBtn = async (e) => {
         e.preventDefault();
 
+        console.log(formData.email, formData.password);
+
         if (formData.email && formData.password) {
             try {
                 const response = await axios.post('http://localhost:3000/api/login',
                     formData,
                     {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                         withCredentials: true, // for cookies to work
                     });
 
-                // console.log(response.data);
+                console.log(response);
+                console.log(response.data);
 
                 if (response.data) {
                     Cookies.set('UserToken', response.data.token);
@@ -48,7 +54,8 @@ export const Login = () => {
                     setShowLoginAlert(true);
                 }
             } catch (error) {
-                console.log(error.message);
+                console.log(error);
+                alert(`Error: ${error.response.data.message}.`);
                 setShowLoginAlert(true);
             }
         } else {

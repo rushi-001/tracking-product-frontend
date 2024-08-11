@@ -37,7 +37,7 @@ export const Home = () => {
                         },
                         withCredentials: true, // for cookies to work
                     }).then((response) => {
-                        // console.log(response);
+                        console.log(response);
                         alert(`Tracking ID: ${trackingNumber} status: ${response.data.data.status}`);
                     }).catch((error) => {
                         if (error.response) {
