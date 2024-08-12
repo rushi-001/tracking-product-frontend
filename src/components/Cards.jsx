@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+//? -------------------Home Cards-------------------
 export const HomeCards = ({ img, category, title, description, link }) => {
     return (
         <div className="p-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"> {/* <= for 5 cards chnage acordingly */}
@@ -22,7 +23,33 @@ export const HomeCards = ({ img, category, title, description, link }) => {
     );
 }
 
+//? -------------------Shipping Cards------------------- 
 export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trackingNumber }) => {
+
+
+    const [isEditing, setEditing] = useState(false);
+    const [newTrackStatus, setNewTrackStatus] = useState();
+
+    const handleStatusChange = (e) => {
+        setNewTrackStatus(e.target.value);
+    }
+
+    const toggleEdit = () => {
+        setEditing(!isEditing);
+    }
+
+    const getTrackingIdBtnUpdate = (e) => {
+        e.preventDefault();
+        btnUpdate(trackingNumber, newTrackStatus);
+        toggleEdit();
+    }
+
+    const getTrackingIdBtnDelete = (e) => {
+        e.preventDefault();
+
+        btnDelete(trackingNumber);
+    }
+
     return (
         <>
             <div className="shadow-md hover:shadow-xl hover:scale-[1.03] m-5 transform duration-200 rounded-lg p-6 max-w-sm mx-auto">
@@ -32,24 +59,52 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                         <span className="block">Tracking ID: <span className="font-normal">{trackId}</span></span>
                         <span className="block">Track Status: <span className="font-normal text-blue-500">{trackStatus}</span></span>
                     </div>
-                    <div className="flex space-x-4">
-                        <button
-                            onClick={btnUpdate} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-                        >
-                            Update Status
-                        </button>
-                        <button
-                            onClick={btnDelete} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-                        >
-                            Delete Track
-                        </button>
-                    </div>
+                    {isEditing ? (
+                        <form onSubmit={getTrackingIdBtnUpdate} className="space-y-4">
+                            <label className="block">
+                                <span className="text-gray-700">New Status:</span>
+                                <input
+                                    type="text"
+                                    value={newTrackStatus}
+                                    onChange={handleStatusChange}
+                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                />
+                            </label>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                            >
+                                Save
+                            </button>
+                            <button
+                                type="button"
+                                onClick={toggleEdit}
+                                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition"
+                            >
+                                Cancel
+                            </button>
+                        </form>
+                    ) : (
+                        <div className="flex space-x-4">
+                            <button
+                                onClick={toggleEdit} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                            >
+                                Update Status
+                            </button>
+                            <button
+                                onClick={getTrackingIdBtnDelete} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                            >
+                                Delete Track
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
     )
 }
 
+//? -------------------Tracking Cards------------------- 
 export const TrackingCards = ({ trackId, trackStatus, btnVerify }) => {
     return (
         <>

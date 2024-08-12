@@ -6,9 +6,14 @@ import { ShippingCards } from '../components/Cards';
 export const Shipping = () => {
 
     const [isFormData, setFormData] = useState({});
+    const [isTracks, setTracks] = useState([]);
+
+
     const userToken = Cookies.get('UserToken');
     const userInfo = JSON.parse(Cookies.get('User'));
 
+
+    //? -----------------------FATCH DATA FROM FORM-----------------------
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
@@ -18,7 +23,7 @@ export const Shipping = () => {
     };
 
     //?-----------------------FOR CREATING NEW TRACK IN DATABASE AND POPULATING USER DATABASE-----------------------
-    const handleSubmitBtnPOST = async (e) => {
+    const handleSubmitBtnNewTrackAndPopulateDB = async (e) => {
         e.preventDefault();
 
         if (userToken) {
@@ -52,8 +57,6 @@ export const Shipping = () => {
     }
 
     //?-----------------------GETTING TRACKS FROM DATABASE-----------------------
-    const [isTracks, setTracks] = useState([]);
-
     useEffect(() => {
         try {
             axios.get(`http://localhost:3000/api/v1/${userInfo._id}`).then((response) => {
@@ -67,6 +70,49 @@ export const Shipping = () => {
         }
     }, []);
 
+
+    //? -----------------------UPDATING TRACK STATE IN DATABASE-----------------------
+    const handleBtnUpdateStateOfTrack = (trackingNumber, newTrackStatus) => {
+
+        console.log("num: " + trackingNumber + " status: " + newTrackStatus);
+
+        axios.put('http://localhost:3000/api/track', { trackingNumber, state: newTrackStatus }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `Bearer ${userToken}`,
+            },
+            withCredentials: true,
+        }).then((response) => {
+            window.location.reload();
+            // console.log(response);
+            alert(response.data.message);
+        }).catch((err) => {
+            alert(err.response.data.message);
+            console.log(err);
+        })
+    }
+
+
+    //? -----------------------DELETE TRACK IN DATABASE AND REMOVE FROM SHIPPING PAGE-----------------------
+    const handleBtnDeleteTrack = (trackingNumber) => {
+
+        axios.delete('http://localhost:3000/api/track', { trackingNumber }, {
+            headers: {
+                'authorization': `Bearer ${userToken}`,
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        }).then((response) => {
+            window.location.reload();
+            // console.log(response);
+            alert("Deleted: " + trackingNumber + "." + response.data.message);
+        }).catch((err) => {
+            alert(err.response.data.message);
+            console.log(err);
+        })
+
+        // console.log("num: " + trackingNumber)
+    }
 
     //?------FOR CREATING NEW TRACK IN SCHEMA ONLY--------
     // axios.post('http://localhost:3000/api/track', { trackingNumber }, {
@@ -89,71 +135,6 @@ export const Shipping = () => {
 
     // baki PUT, DELETE
 
-    const handleSubmitBtnPUT = (e) => {
-        e.preventDefault();
-        const userToken = Cookies.get('UserToken');
-        if (userToken) {
-            if (isFormData) {
-                const trackingNumber = isFormData['trackId']; // backend looking for trackingNumber in req.body
-                axios.post('http://localhost:3000/api/track', { trackingNumber }, // sending data in json fromat
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'authorization': `Bearer ${userToken}`,
-                        },
-                        withCredentials: true, // for cookies to work
-                    }).catch((error) => {
-                        if (error.response) {
-                            alert(`Error: ${error.response.data.message}. Check the existing Trackings.`); // Error response from server
-                        } else {
-                            alert("Something went wrong!"); // Network or other errors
-                        }
-                        console.log('Error: ' + error);
-                    })
-            } else {
-                alert('Please add the "Track ID"');
-            }
-        } else {
-            navigate('/login');
-            alert('Please login first!');
-        }
-    }
-
-    const handleSubmitBtnDELETE = (e) => {
-        e.preventDefault();
-
-        const bool = window.confirm('Are you sure you want to delete?');
-        if (!bool) {
-            return;
-        }
-
-        const userToken = Cookies.get('UserToken');
-        if (userToken) {
-            if (isFormData) {
-                const trackingNumber = isFormData['trackId']; // backend looking for trackingNumber in req.body
-                axios.post('http://localhost:3000/api/track', { trackingNumber }, // sending data in json fromat
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'authorization': `Bearer ${userToken}`,
-                        },
-                        withCredentials: true, // for cookies to work
-                    }).catch((error) => {
-                        if (error.response) {
-                            alert(`Error: ${error.response.data.message}. Check the existing Trackings.`); // Error response from server
-                        } else {
-                            alert("Something went wrong!"); // Network or other errors
-                        }
-                        console.log('Error: ' + error);
-                    })
-            } else {
-                alert('Please add the "Track ID"');
-            }
-        } else {
-            navigate('/login');
-            alert('Please login first!');
-        }
-    }
 
     return (
         <>
@@ -170,7 +151,7 @@ export const Shipping = () => {
                                 <input onChange={handleChange} placeholder='Create new tracking number for your customer (eg. "ABC@abc!123").' type="text" id="trackNumber" name="trackNumber" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
                                 <label className="leading-7 text-sm text-gray-600">Customer ID</label>
                                 <input onChange={handleChange} placeholder='Add customer ID.' type="text" id="customerId" name="customerId" className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-                                <button type='submit' onClick={handleSubmitBtnPOST} className="mt-3 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create Track</button>
+                                <button type='submit' onClick={handleSubmitBtnNewTrackAndPopulateDB} className="mt-3 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create Track</button>
                             </form>
                         </div>
                     </div>
@@ -180,8 +161,8 @@ export const Shipping = () => {
                         {isTracks.map((track) => (
                             <ShippingCards
                                 key={track._id}
-                                btnUpdate={() => console.log(update)}
-                                btnDelete={() => console.log(deleteTrack)}
+                                btnUpdate={handleBtnUpdateStateOfTrack}
+                                btnDelete={handleBtnDeleteTrack}
                                 trackId={track._id}
                                 trackStatus={track.status}
                                 trackingNumber={track.trackingNumber}
