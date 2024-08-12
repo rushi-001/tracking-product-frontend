@@ -3,7 +3,7 @@ import React from 'react'
 export const Tracking = () => {
     return (
         <>
-            <div>Tracking</div>
+            <div className='bg-[#EFF2FF]'>Tracking</div>
             {/* <div className="flex flex-col sm:flex-row justify-between items-center m-5 bg-white py-9 rounded-lg">
                     <div className='flex flex-col'>
                         <h1 className='m-3 text-xl text-center sm:text-left'>Track ID :~ ID</h1>

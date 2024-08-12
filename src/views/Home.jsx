@@ -57,7 +57,7 @@ export const Home = () => {
     }
 
     return (
-        <div>
+        <div className='bg-[#EFF2FF]'>
             <section className="relative bg-[#E8B446]">
                 <div className='container mx-auto px-4'>
                     <div className='relative'>
@@ -117,27 +117,22 @@ export const Home = () => {
                         <HomeCards
                             img={"./assets/pick-up.png"}
                             title="Schedule Pickup"
-                            link={"/delivered"}
                         />
                         <HomeCards
                             img={"./assets/package.png"}
                             title="Rediract You Package"
-                            link={"/delivered"}
                         />
                         <HomeCards
                             img={"./assets/map.png"}
                             title="Find Location"
-                            link={"/delivered"}
                         />
                         <HomeCards
                             img={"./assets/agent.png"}
                             title="Seller  Details"
-                            link={"/delivered"}
                         />
                         <HomeCards
                             img={"./assets/faq.png"}
                             title="FAQs"
-                            link={"/delivered"}
                         />
                     </div>
                 </div>
