@@ -95,46 +95,29 @@ export const Shipping = () => {
 
     //? -----------------------DELETE TRACK IN DATABASE AND REMOVE FROM SHIPPING PAGE-----------------------
     const handleBtnDeleteTrack = (trackingNumber) => {
-
-        axios.delete('http://localhost:3000/api/track', { trackingNumber }, {
-            headers: {
-                'authorization': `Bearer ${userToken}`,
-                'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-        }).then((response) => {
-            window.location.reload();
-            // console.log(response);
-            alert("Deleted: " + trackingNumber + "." + response.data.message);
-        }).catch((err) => {
-            alert(err.response.data.message);
-            console.log(err);
-        })
+        console.log(userToken)
+        console.log(trackingNumber)
+        const bool = window.confirm("Are you sure you want to delete this track?");
+        if (bool) {
+            axios.delete('http://localhost:3000/api/track', {
+                params: { trackingNumber },
+                headers: {
+                    'authorization': `Bearer ${userToken}`,
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }).then((response) => {
+                // console.log(response);
+                alert("Deleted track with tracking number: " + trackingNumber + ". " + response.data.message);
+                window.location.reload();
+            }).catch((err) => {
+                alert(err.response.data.message);
+                console.log(err);
+            })
+        }
 
         // console.log("num: " + trackingNumber)
     }
-
-    //?------FOR CREATING NEW TRACK IN SCHEMA ONLY--------
-    // axios.post('http://localhost:3000/api/track', { trackingNumber }, {
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'authorization': `Bearer ${userToken}`,
-    //     },
-    //     withCredentials: true,
-    // }).then((response) => {
-    //     console.log(response);
-    //     alert(response.data.message);
-    // }).catch((error) => {
-    //     console.log(error);
-    //     if (error.response.data.message) {
-    //         alert(`Something went wrong: ${error.response.data.message}!`);
-    //     } else {
-    //         alert("Something went wrong.");
-    //     }
-    // });
-
-    // baki PUT, DELETE
-
 
     return (
         <>
