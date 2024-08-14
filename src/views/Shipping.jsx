@@ -6,7 +6,7 @@ import { ShippingCards } from '../components/Cards';
 export const Shipping = () => {
 
     const [isFormData, setFormData] = useState({});
-    const [isTracks, setTracks] = useState([]);
+    const [isOrderTracking, setOrderTracking] = useState([]);
 
 
     const userToken = Cookies.get('UserToken');
@@ -60,7 +60,7 @@ export const Shipping = () => {
     useEffect(() => {
         try {
             axios.get(`http://localhost:3000/api/v1/${userInfo._id}`).then((response) => {
-                setTracks(response.data.user.orderTracking);
+                setOrderTracking(response.data.user.orderTracking);
             }).catch((err) => {
                 console.log(err);
             })
@@ -74,7 +74,7 @@ export const Shipping = () => {
     //? -----------------------UPDATING TRACK STATE IN DATABASE-----------------------
     const handleBtnUpdateStateOfTrack = (trackingNumber, newTrackStatus) => {
 
-        console.log("num: " + trackingNumber + " status: " + newTrackStatus);
+        // console.log("num: " + trackingNumber + " status: " + newTrackStatus);
 
         axios.put('http://localhost:3000/api/track', { trackingNumber, state: newTrackStatus }, {
             headers: {
@@ -95,8 +95,8 @@ export const Shipping = () => {
 
     //? -----------------------DELETE TRACK IN DATABASE AND REMOVE FROM SHIPPING PAGE-----------------------
     const handleBtnDeleteTrack = (trackingNumber) => {
-        console.log(userToken)
-        console.log(trackingNumber)
+        // console.log(userToken)
+        // console.log(trackingNumber)
         const bool = window.confirm("Are you sure you want to delete this track?");
         if (bool) {
             axios.delete('http://localhost:3000/api/track', {
@@ -141,7 +141,7 @@ export const Shipping = () => {
                 </section>
                 <div className="m-3">
                     <section className='gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-                        {isTracks.map((track) => (
+                        {isOrderTracking.map((track) => (
                             <ShippingCards
                                 key={track._id}
                                 btnUpdate={handleBtnUpdateStateOfTrack}
@@ -149,6 +149,7 @@ export const Shipping = () => {
                                 trackId={track._id}
                                 trackStatus={track.status}
                                 trackingNumber={track.trackingNumber}
+
                             />
                         ))}
                     </section>

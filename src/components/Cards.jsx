@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import Cookies from 'js-cookie';
 
 //? -------------------Home Cards-------------------
 export const HomeCards = ({ img, category, title, description, link }) => {
@@ -12,12 +14,6 @@ export const HomeCards = ({ img, category, title, description, link }) => {
                 <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{category}</h2>
                 <h1 className="title-font text-xl font-medium text-gray-900 mb-3">{title}</h1>
                 <p className="leading-relaxed text-sm mb-3">{description}</p>
-                {/* <a href={link} className="text-indigo-500 inline-flex items-center">Learn More
-                    <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="M12 5l7 7-7 7" />
-                    </svg>
-                </a> */}
             </div>
         </div>
     );
@@ -30,7 +26,11 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
     const [isEditing, setEditing] = useState(false);
     const [newTrackStatus, setNewTrackStatus] = useState();
 
-    const handleStatusChange = (e) => {
+    const userToken = Cookies.get('User');
+    const id = JSON.parse(userToken)._id;
+    // console.log(id)
+
+    const handleStateChange = (e) => {
         setNewTrackStatus(e.target.value);
     }
 
@@ -50,6 +50,23 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
         btnDelete(trackingNumber);
     }
 
+    const getOTPfromServer = async (e) => {
+        e.preventDefault();
+        const bool = window.confirm("OTP will be generated for your customer. Do you want to continue?");
+        if (bool) {
+            await axios.post('http://localhost:3000/api/v1/deliver', { sellerId: id, trackingId: trackId }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }).then((response) => {
+                console.log(response)
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }
+
     return (
         <>
             <div className="shadow-md hover:shadow-xl hover:scale-[1.03] m-5 transform duration-200 rounded-lg p-6 max-w-sm mx-auto">
@@ -66,7 +83,7 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                                 <input
                                     type="text"
                                     value={newTrackStatus}
-                                    onChange={handleStatusChange}
+                                    onChange={handleStateChange}
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                                 />
                             </label>
@@ -79,7 +96,7 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                             <button
                                 type="button"
                                 onClick={toggleEdit}
-                                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition"
+                                className="m-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition"
                             >
                                 Cancel
                             </button>
@@ -90,6 +107,11 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                                 onClick={toggleEdit} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
                             >
                                 Update Status
+                            </button>
+                            <button
+                                onClick={getOTPfromServer} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                            >
+                                Generate OTP
                             </button>
                             <button
                                 onClick={getTrackingIdBtnDelete} className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
@@ -105,22 +127,70 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
 }
 
 //? -------------------Tracking Cards------------------- 
-export const TrackingCards = ({ trackId, trackStatus, btnVerify }) => {
+export const TrackingCards = ({ trackId, trackStatus, btnVerify, trackingNumber }) => {
+
+    const [isEditing, setEditing] = useState(false);
+    const [isOTP, setOTP] = useState();
+
+
+    const handleStateChange = (e) => {
+        setOTP(e.target.value);
+    }
+
+    const toggleEdit = () => {
+        setEditing(!isEditing);
+    }
+
+    const getOTP = (e) => {
+        e.preventDefault();
+        btnVerify(isOTP);
+        toggleEdit();
+    }
+
+
     return (
         <>
-            <div className="flex flex-col shadow-md hover:shadow-xl transform duration-300 sm:flex-row justify-between items-center m-5 bg-gray-100 py-9 rounded-lg">
+            <div className="flex flex-col shadow-md hover:shadow-xl hover:scale-[1.01] transform duration-300 sm:flex-row justify-between items-center m-5 py-9 rounded-lg">
                 <div className="text-gray-800 ps-5 font-semibold text-lg">
                     <span className="block">Track ID: <span className="font-normal">{trackId}</span></span>
-                    <span className="block">Track Status: <span className="font-normal">{trackStatus}</span></span>
+                    <span className="block">Tracking Number: <span className="font-normal">{trackingNumber}</span></span>
+                    <span className="block">Track Status: <span className="font-normal text-indigo-500">{trackStatus}</span></span>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center m-3">
-                    <button
-                        onClick={btnVerify}
-                        className="flex mx-3 mb-3 sm:mb-0 text-white bg-indigo-500 border-0 py-2 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                    >
-                        Verify
-                    </button>
-                </div>
+                {isEditing ? (
+                    <form onSubmit={getOTP} className="space-y-4">
+                        <label className="block">
+                            <span className="text-gray-700">OTP:</span>
+                            <input
+                                value={isOTP}
+                                onChange={handleStateChange}
+                                placeholder='Enter OTP'
+                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                            />
+                        </label>
+                        <button
+                            type="submit"
+                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            onClick={toggleEdit}
+                            className="m-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition"
+                        >
+                            Cancel
+                        </button>
+                    </form>
+                ) : (
+                    <div className="flex flex-col sm:flex-row items-center m-3">
+                        <button
+                            onClick={toggleEdit}
+                            className="flex mx-3 mb-3 sm:mb-0 text-white bg-indigo-500 border-0 py-2 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        >
+                            Verify With OTP
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     )

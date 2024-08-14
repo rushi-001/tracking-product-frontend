@@ -1,7 +1,9 @@
 ------------left--------------------
--> apply catds in grid form
+-> working on getOTPfromServer in cards.jsx
 
 ------------done--------------------
+-> remove the form and just show the cards
+-> apply catds in grid form
 -> see what data come from back end and show data in front end
 -> working on post request
 -> populate user schema with tarcking data 
