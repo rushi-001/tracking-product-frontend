@@ -140,7 +140,7 @@ export const Shipping = () => {
                     </div>
                 </section>
                 <div className="m-3">
-                    <section className='gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                    <section className='gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
                         {isOrderTracking.map((track) => (
                             <ShippingCards
                                 key={track._id}
@@ -149,7 +149,6 @@ export const Shipping = () => {
                                 trackId={track._id}
                                 trackStatus={track.status}
                                 trackingNumber={track.trackingNumber}
-
                             />
                         ))}
                     </section>

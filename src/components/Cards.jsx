@@ -81,12 +81,6 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                         <form onSubmit={getTrackingIdBtnUpdate} className="space-y-4">
                             <label className="block">
                                 <span className="text-gray-700">New Status:</span>
-                                {/* <input
-                                    type="text"
-                                    value={newTrackStatus}
-                                    onChange={handleStateChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                                /> */}
                                 <select
                                     type="text"
                                     value={newTrackStatus}
@@ -195,7 +189,7 @@ export const TrackingCards = ({ trackId, trackStatus, trackingNumber }) => {
                                 value={isOTP}
                                 onChange={handleStateChange}
                                 placeholder='Enter OTP'
-                                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                             />
                         </label>
                         <button
