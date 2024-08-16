@@ -34,10 +34,6 @@ export const Tracking = () => {
 
     console.log(productTracking)
 
-    const handleBtnVarify = (otp) => {
-        console.log(otp)
-    }
-
     return (
         <>
             <div className='bg-[#EFF2FF]'>
@@ -52,7 +48,6 @@ export const Tracking = () => {
                             <TrackingCards
                                 key={data._id}
                                 trackId={data._id}
-                                btnVerify={handleBtnVarify}
                                 trackingNumber={data.trackingNumber}
                                 trackStatus={data.status}
                             />

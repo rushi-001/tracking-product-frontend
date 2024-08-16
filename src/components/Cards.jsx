@@ -61,6 +61,7 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                 withCredentials: true,
             }).then((response) => {
                 console.log(response)
+                alert('Tracking Number: ' + trackingNumber + "You can shere the OTP to your customer: " + response.data.otp);
             }).catch((err) => {
                 console.log(err)
             })
@@ -127,10 +128,13 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
 }
 
 //? -------------------Tracking Cards------------------- 
-export const TrackingCards = ({ trackId, trackStatus, btnVerify, trackingNumber }) => {
+export const TrackingCards = ({ trackId, trackStatus, trackingNumber }) => {
 
     const [isEditing, setEditing] = useState(false);
     const [isOTP, setOTP] = useState();
+
+    const userToken = Cookies.get('User');
+    const id = JSON.parse(userToken)._id;
 
 
     const handleStateChange = (e) => {
@@ -143,8 +147,25 @@ export const TrackingCards = ({ trackId, trackStatus, btnVerify, trackingNumber 
 
     const getOTP = (e) => {
         e.preventDefault();
-        btnVerify(isOTP);
-        toggleEdit();
+
+        try {
+            axios.post('http://localhost:3000/api/v1/ifOtp', {  trackingId: trackId, buyerId: id, otp: isOTP }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                withCredentials: true,
+            }).then((response) => {
+                console.log(response)
+                if (response.data) {
+                    alert('OTP is verified successfully, ' + response.data.message);
+                    toggleEdit();
+                    window.location.reload();
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            alert('Invalid OTP, Try Again.');
+        }
     }
 
 
@@ -157,7 +178,7 @@ export const TrackingCards = ({ trackId, trackStatus, btnVerify, trackingNumber 
                     <span className="block">Track Status: <span className="font-normal text-indigo-500">{trackStatus}</span></span>
                 </div>
                 {isEditing ? (
-                    <form onSubmit={getOTP} className="space-y-4">
+                    <form onSubmit={getOTP} className="space-y-4 m-3">
                         <label className="block">
                             <span className="text-gray-700">OTP:</span>
                             <input
