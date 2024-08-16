@@ -61,7 +61,7 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                 withCredentials: true,
             }).then((response) => {
                 console.log(response)
-                alert('Tracking Number: ' + trackingNumber + "You can shere the OTP to your customer: " + response.data.otp);
+                alert('Tracking Number: ' + trackingNumber + ", You can shere the OTP to your customer: " + response.data.otp);
             }).catch((err) => {
                 console.log(err)
             })
@@ -81,12 +81,22 @@ export const ShippingCards = ({ trackId, trackStatus, btnUpdate, btnDelete, trac
                         <form onSubmit={getTrackingIdBtnUpdate} className="space-y-4">
                             <label className="block">
                                 <span className="text-gray-700">New Status:</span>
-                                <input
+                                {/* <input
                                     type="text"
                                     value={newTrackStatus}
                                     onChange={handleStateChange}
                                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                                />
+                                /> */}
+                                <select
+                                    type="text"
+                                    value={newTrackStatus}
+                                    onChange={handleStateChange}
+                                    className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                >
+                                    <option value="In-Transit">In-Transit</option>
+                                    <option value="Out for Delivery">Out for Delivery</option>
+                                    <option value="Delivered">Delivered</option>
+                                </select>
                             </label>
                             <button
                                 type="submit"
@@ -149,7 +159,7 @@ export const TrackingCards = ({ trackId, trackStatus, trackingNumber }) => {
         e.preventDefault();
 
         try {
-            axios.post('http://localhost:3000/api/v1/ifOtp', {  trackingId: trackId, buyerId: id, otp: isOTP }, {
+            axios.post('http://localhost:3000/api/v1/ifOtp', { trackingId: trackId, buyerId: id, otp: isOTP }, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
